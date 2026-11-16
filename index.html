@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="claude:viewport-fit-sides" content="cover">
 <title>Career Saathi</title>
 <meta name="theme-color" content="#0b0d14">
@@ -185,6 +185,8 @@ footer p{margin:0}
 }
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
+</head>
+<body>
 
 <div class="wrap">
   <header class="top">
@@ -430,9 +432,12 @@ document.addEventListener('click',e=>{
   const o=e.target.closest('[data-open]'); if(o){openCareer(o.dataset.open);return}
   const v=e.target.closest('.vbtn'); if(v){
     const id=v.dataset.id, val=v.dataset.v;
+    const box=v.closest('#dv')?'#dv':v.closest('#list')?'#list':'';
     if(V[id]===val)delete V[id]; else V[id]=val;
     store.set('cs.v',V); renderList();
     if(openId===id){const dv=$('#dv'); if(dv)dv.innerHTML=verdictBtns(id)}
+    /* The buttons were just rebuilt, so put keyboard focus back on the one that was pressed. */
+    const again=box&&$(`${box} .vbtn[data-id="${id}"][data-v="${val}"]`); if(again)again.focus({preventScroll:true});
   }
 });
 $('#q').addEventListener('input',e=>{S.q=e.target.value.trim();renderList()});
@@ -475,4 +480,5 @@ function setLang(l){
 })();
 if('serviceWorker' in navigator && location.protocol.startsWith('http')){window.addEventListener('load',()=>{try{navigator.serviceWorker.register('sw.js').catch(()=>{})}catch(e){}})}
 </script>
+</body>
 </html>
